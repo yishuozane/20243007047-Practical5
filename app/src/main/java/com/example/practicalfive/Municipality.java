@@ -8,6 +8,11 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.content.Intent;
+import android.content.ActivityNotFoundException;
+import android.net.Uri;
+import android.widget.Toast;
+
 public class Municipality extends AppCompatActivity {
 
     private String selectedMunicipality;
@@ -77,5 +82,36 @@ public class Municipality extends AppCompatActivity {
         infoView.setTextColor(color);
         visitButton.setBackgroundTintList(
                 ContextCompat.getColorStateList(this, colorRes));
+        visitButton.setOnClickListener(v -> {
+            String url;
+
+            switch (selectedMunicipality) {
+                case "Beijing":
+                    url = "https://english.beijing.gov.cn/";
+                    break;
+                case "Shanghai":
+                    url = "https://english.shanghai.gov.cn/";
+                    break;
+                case "Tianjin":
+                    url = "https://en.tj.gov.cn/";
+                    break;
+                case "Chongqing":
+                    url = "https://english.cq.gov.cn/";
+                    break;
+                default:
+                    return;
+            }
+
+            Intent intent = new Intent(
+                    Intent.ACTION_VIEW, Uri.parse(url));
+
+            try {
+                startActivity(intent);
+            } catch (ActivityNotFoundException e) {
+                Toast.makeText(this,
+                        "No browser available",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
